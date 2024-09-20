@@ -1,8 +1,7 @@
 name: Autograding Tests
-on:
-  - push
-  - workflow_dispatch
-  - repository_dispatch
+'on':
+- push
+- repository_dispatch
 permissions:
   checks: write
   actions: read
@@ -14,17 +13,18 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: lab3_test
-      uses: classroom-resources/autograding-io-grader@v1
+    - name: hello_test
+      id: hello_test
+      uses: classroom-resources/autograding-command-grader@v1
       with:
-        test-name: lab3_test
+        test-name: hello_test
         setup-command: sudo -H pip3 install pytest
         command: pytest hello_test.py
-        timeout: 2
+        timeout: 10
         max-score: 1
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        LAB3_TEST_RESULTS: "${{ steps.hello_test.outputs.result }}"
+        HELLO_TEST_RESULTS: "${{steps.hello_test.outputs.result}}"
       with:
-        runners: lab3_test
+        runners: hello_test
